@@ -57,10 +57,13 @@ public class ExtractLogs {
         String password = "security";
 
         System.out.println("Parsed "+logs.size()+" logs...");
-        System.out.println("Attempting to insert into database...");
+        System.out.println("Attempting to retrieve database connection...");
 
         try (Connection connection = DriverManager.getConnection(url, username, password)) {
-            System.out.println("Database connected!");
+            System.out.println("Retrieved databased connection...");
+	    System.out.println("Creating LOG table...");
+            System.out.println("Log table created...");
+	    System.out.println("Inserting logs into LOG table...");
         } catch (SQLException e) {
             throw new IllegalStateException("Cannot connect the database!", e);
         }
