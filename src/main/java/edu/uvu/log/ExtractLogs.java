@@ -52,9 +52,9 @@ public class ExtractLogs {
 
         }
 
-        String url = "jdbc:mysql://localhost:3306/javabase";
-        String username = "java";
-        String password = "password";
+        String url = "jdbc:mysql://localhost:3306/webappsdb";
+        String username = "cyber";
+        String password = "security";
 
         System.out.println("Parsed "+logs.size()+" logs...");
         System.out.println("Attempting to insert into database...");
