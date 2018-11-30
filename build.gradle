@@ -16,6 +16,10 @@ jar {
                 'Main-Class': 'edu.uvu.log.ExtractLogs'
         )
     }
+
+    from {
+        configurations.compile.collect { it.isDirectory() ? it : zipTree(it) }
+    }
 }
 
 dependencies {
