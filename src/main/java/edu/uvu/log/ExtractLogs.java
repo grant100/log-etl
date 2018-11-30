@@ -62,7 +62,6 @@ public class ExtractLogs {
             System.out.println("Retrieved databased connection...");
             createTable(connection);
             insertLogs(connection, logs);
-            connection.commit();
             System.out.println("Exiting...");
         } catch (SQLException e) {
             throw new IllegalStateException("Cannot connect the database!", e);
