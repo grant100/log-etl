@@ -128,7 +128,10 @@ public class ExtractLogs {
 
         PreparedStatement statement = connection.prepareStatement(insertLogs);
         System.out.println("Inserting logs into webappsdb.logs table...");
+        int i = 1;
+        int total = logs.size();
         for (Log log : logs) {
+            System.out.print("\rWorking %" + i/total );
             statement.setString(1, log.getIp());
             statement.setString(2, log.getDashOne());
             statement.setString(3, log.getDashTwo());
