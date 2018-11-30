@@ -98,7 +98,7 @@ public class ExtractLogs {
     public static void insertLogs(Connection connection, List<Log> logs) throws SQLException {
         System.out.println("Inserting logs into LOGS table...");
 
-        String insertLogs = "INSERT INTO LOGS VALUES (" +
+        String insertLogs = "INSERT INTO logs VALUES (" +
                 "?," +
                 "?," +
                 "?," +
