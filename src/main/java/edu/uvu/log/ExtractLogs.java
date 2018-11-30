@@ -69,7 +69,6 @@ public class ExtractLogs {
         } finally {
             if (connection != null) {
                 connection.close();
-                ;
             }
         }
 
@@ -77,8 +76,8 @@ public class ExtractLogs {
 
     public static void createTable(Connection connection) throws SQLException {
         Statement statement = connection.createStatement();
-        System.out.println("Creating LOGS table...");
-        String createTable = "CREATE TABLE LOGS (" +
+        System.out.println("Creating webappsdb.logs table...");
+        String createTable = "CREATE TABLE logs (" +
                 "IP VARCHAR(30)," +
                 "D1 VARCHAR(30)," +
                 "D2 VARCHAR(30)," +
@@ -87,13 +86,13 @@ public class ExtractLogs {
                 "QUERY VARCHAR(2000)," +
                 "PROTOCOL VARCHAR(30)," +
                 "HTTP_STATUS VARCHAR(30)," +
-                "SIZE VARCHAR(30)," +
+                "SIZE VARCHAR(200)," +
                 "REFERRAL_URL VARCHAR(2000)," +
                 "USER_AGENT VARCHAR(2000)" +
                 " );";
 
         statement.execute(createTable);
-        System.out.println("LOGS table created...");
+        System.out.println("webappsdb.logs table created...");
     }
 
     public static void insertLogs(Connection connection, List<Log> logs) throws SQLException {
@@ -129,10 +128,9 @@ public class ExtractLogs {
             statement.setString(11, log.getUserAgent());
 
             statement.execute();
-            connection.commit();
         }
 
-        System.out.println("Completed inserting logs into LOGS table...");
+        System.out.println("Completed inserting logs into webappsdb.logs table...");
     }
 
 
