@@ -130,8 +130,10 @@ public class ExtractLogs {
         System.out.println("Inserting logs into webappsdb.logs table...");
         int i = 1;
         int total = logs.size();
+        
         for (Log log : logs) {
-            System.out.print("\rWorking %" + i/total );
+            int pct = i/total;
+            System.out.print("\rWorking %" + pct );
             statement.setString(1, log.getIp());
             statement.setString(2, log.getDashOne());
             statement.setString(3, log.getDashTwo());
