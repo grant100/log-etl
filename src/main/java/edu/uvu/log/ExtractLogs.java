@@ -64,6 +64,7 @@ public class ExtractLogs {
         try {
             connection = DriverManager.getConnection(url, username, password);
             System.out.println("Retrieved databased connection from " + url);
+            dropTable(connection);
             createTable(connection);
             insertLogs(connection, logs);
             System.out.println("Exiting...");
@@ -77,6 +78,18 @@ public class ExtractLogs {
 
     }
 
+    public static void dropTable(Connection connection) throws SQLException {
+        Statement statement = connection.createStatement();
+        try{
+            String dropTable = "DROP TABLE logs;";
+
+            statement.execute(dropTable);
+            System.out.println("Prepping workspace...");
+        }catch (Exception e){
+            System.out.println("Firing lazers...");
+        }
+
+    }
     public static void createTable(Connection connection) throws SQLException {
         Statement statement = connection.createStatement();
         String createTable = "CREATE TABLE logs (" +
