@@ -21,7 +21,7 @@ public class ExtractLogs {
         System.out.println("Parsing logs...");
         List<Log> logs = new ArrayList<>();
 
-        BufferedReader reader = new BufferedReader(new FileReader(new File("/Users/grant/log-etl/src/access_all")));
+        BufferedReader reader = new BufferedReader(new FileReader(new File("/root/access_all")));
         String line;
 
         while ((line = reader.readLine()) != null) {
