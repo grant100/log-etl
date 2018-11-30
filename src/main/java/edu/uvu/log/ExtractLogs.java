@@ -64,7 +64,7 @@ public class ExtractLogs {
             insertLogs(connection, logs);
             System.out.println("Exiting...");
         } catch (SQLException e) {
-            throw new IllegalStateException("Cannot connect the database!", e);
+            throw e;
         } finally {
             if (connection != null) {
                 connection.close();
@@ -75,7 +75,6 @@ public class ExtractLogs {
 
     public static void createTable(Connection connection) throws SQLException {
         Statement statement = connection.createStatement();
-        System.out.println("Creating webappsdb.logs table...");
         String createTable = "CREATE TABLE logs (" +
                 "IP VARCHAR(30)," +
                 "D1 VARCHAR(30)," +
@@ -95,7 +94,6 @@ public class ExtractLogs {
     }
 
     public static void insertLogs(Connection connection, List<Log> logs) throws SQLException {
-        System.out.println("Inserting logs into LOGS table...");
 
         String insertLogs = "INSERT INTO logs VALUES (" +
                 "?," +
