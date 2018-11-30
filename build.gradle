@@ -1,5 +1,4 @@
 group 'edu.uvu.log'
-version '1.0-SNAPSHOT'
 
 apply plugin: 'java'
 
