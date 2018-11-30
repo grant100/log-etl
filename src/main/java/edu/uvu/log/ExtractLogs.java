@@ -145,6 +145,7 @@ public class ExtractLogs {
             statement.setString(11, log.getUserAgent());
 
             statement.execute();
+            i++;
         }
 
         System.out.println("Completed inserting logs into webappsdb.logs table...");
