@@ -6,6 +6,7 @@ import java.io.FileReader;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -16,12 +17,16 @@ public class ExtractLogs {
     }
 
     public static void read() throws Exception {
-        System.out.println("Parsing logs...");
+        System.out.println("Enter path to log file: ");
+        Scanner in = new Scanner(System.in);
+        String path = in.nextLine();
+
         List<Log> logs = new ArrayList<>();
 
-        BufferedReader reader = new BufferedReader(new FileReader(new File("/root/access_all")));
+        BufferedReader reader = new BufferedReader(new FileReader(new File(path)));
         String line;
 
+        System.out.println("Parsing logs...");
         while ((line = reader.readLine()) != null) {
             String res = line;
 
@@ -58,7 +63,7 @@ public class ExtractLogs {
         Connection connection = null;
         try {
             connection = DriverManager.getConnection(url, username, password);
-            System.out.println("Retrieved databased connection...");
+            System.out.println("Retrieved databased connection from " + url);
             createTable(connection);
             insertLogs(connection, logs);
             System.out.println("Exiting...");
@@ -109,8 +114,8 @@ public class ExtractLogs {
                 ");";
 
         PreparedStatement statement = connection.prepareStatement(insertLogs);
-
-        for(Log log : logs){
+        System.out.println("Inserting logs into webappsdb.logs table...");
+        for (Log log : logs) {
             statement.setString(1, log.getIp());
             statement.setString(2, log.getDashOne());
             statement.setString(3, log.getDashTwo());
