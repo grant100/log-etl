@@ -55,7 +55,6 @@ public class ExtractLogs {
         String password = "security";
 
         System.out.println("Parsed " + logs.size() + " logs...");
-        System.out.println("Attempting to retrieve database connection...");
         Connection connection = null;
         try {
             connection = DriverManager.getConnection(url, username, password);
