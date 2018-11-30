@@ -5,6 +5,7 @@ import java.io.File;
 import java.io.FileReader;
 import java.sql.*;
 import java.util.ArrayList;
+import java.text.DecimalFormat;
 import java.util.List;
 import java.util.Scanner;
 import java.util.regex.Matcher;
@@ -25,12 +26,13 @@ public class ExtractLogs {
 
         BufferedReader reader = new BufferedReader(new FileReader(new File(path)));
         String line;
-
-        System.out.println("Parsing logs...");
+	Pattern p = Pattern.compile("\"([^\"]*)\"");
+        int count = 1;
         while ((line = reader.readLine()) != null) {
+	    System.out.print("\rParsing  ==> "+count+" logs");
             String res = line;
 
-            Pattern p = Pattern.compile("\"([^\"]*)\"");
+            
             Matcher m = p.matcher(res);
 
             List<String> tokens = new ArrayList<>();
@@ -52,22 +54,23 @@ public class ExtractLogs {
                 Log log = new Log(splitn[0], splitn[1], splitn[2], splitn[3] + splitn[4], splitn[5], splitn[6], "", "", "", "", userAgent);
                 logs.add(log);
             }
-
+	    count++;	
         }
-
+	System.out.println("\rParsed   ==> "+count+" logs   ");	
         String url = "jdbc:mysql://localhost:3306/webappsdb";
         String username = "cyber";
         String password = "security";
 
-        System.out.println("Parsed " + logs.size() + " logs...");
         Connection connection = null;
         try {
             connection = DriverManager.getConnection(url, username, password);
-            System.out.println("Retrieved databased connection from " + url);
+	    connection.setAutoCommit(false);
+            System.out.println("\rConnected to: " + url);
             dropTable(connection);
             createTable(connection);
             insertLogs(connection, logs);
-            System.out.println("Exiting...");
+	    connection.commit();
+            System.out.println("Exiting!");
         } catch (SQLException e) {
             throw e;
         } finally {
@@ -82,11 +85,8 @@ public class ExtractLogs {
         Statement statement = connection.createStatement();
         try{
             String dropTable = "DROP TABLE logs;";
-
             statement.execute(dropTable);
-            System.out.println("Prepping workspace...");
         }catch (Exception e){
-            System.out.println("Firing lazers...");
         }
 
     }
@@ -107,7 +107,7 @@ public class ExtractLogs {
                 " );";
 
         statement.execute(createTable);
-        System.out.println("webappsdb.logs table created...");
+        System.out.println("webappsdb.logs table created");
     }
 
     public static void insertLogs(Connection connection, List<Log> logs) throws SQLException {
@@ -128,12 +128,13 @@ public class ExtractLogs {
 
         PreparedStatement statement = connection.prepareStatement(insertLogs);
         System.out.println("Inserting logs into webappsdb.logs table...");
-        int i = 1;
-        int total = logs.size();
-        
+        float i = 1;
+        float size = logs.size();
+        DecimalFormat df = new DecimalFormat();
+	df.setMaximumFractionDigits(2);
         for (Log log : logs) {
-            int pct = i/total;
-            System.out.print("\rWorking %" + pct );
+            float pct = (i/size)*100;		
+	    System.out.print("\rWorking  ==> "+df.format(pct)+"%");		
             statement.setString(1, log.getIp());
             statement.setString(2, log.getDashOne());
             statement.setString(3, log.getDashTwo());
@@ -149,8 +150,9 @@ public class ExtractLogs {
             statement.execute();
             i++;
         }
-
-        System.out.println("Completed inserting logs into webappsdb.logs table...");
+	float pct = (i/size)*100;
+	System.out.println("\rFinished ==> "+df.format(pct)+"%      ");
+        System.out.println("\rCompleted inserting logs into webappsdb.logs table");
     }
 
 
