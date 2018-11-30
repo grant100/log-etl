@@ -10,12 +10,12 @@ public class Log {
     private String protocol;
     private String httpStatus;
     private String size;
-    private String referalUrl;
+    private String referralUrl;
     private String userAgent;
 
     public Log(){}
 
-    public Log(String ip, String dashOne, String dashTwo, String timestamp, String method, String query, String protocol, String httpStatus, String size, String referalUrl, String userAgent) {
+    public Log(String ip, String dashOne, String dashTwo, String timestamp, String method, String query, String protocol, String httpStatus, String size, String referralUrl, String userAgent) {
         this.ip = ip;
         this.dashOne = dashOne.replace("\"","");
         this.dashTwo = dashTwo.replace("\"","");
@@ -25,7 +25,7 @@ public class Log {
         this.protocol = protocol.replace("\"","");
         this.httpStatus = httpStatus;
         this.size = size;
-        this.referalUrl = referalUrl.replace("\"","");
+        this.referralUrl = referralUrl.replace("\"","");
         this.userAgent = userAgent;
     }
 
@@ -101,12 +101,12 @@ public class Log {
         this.size = size;
     }
 
-    public String getReferalUrl() {
-        return referalUrl;
+    public String getReferralUrl() {
+        return referralUrl;
     }
 
-    public void setReferalUrl(String referalUrl) {
-        this.referalUrl = referalUrl;
+    public void setReferralUrl(String referralUrl) {
+        this.referralUrl = referralUrl;
     }
 
     public String getUserAgent() {
