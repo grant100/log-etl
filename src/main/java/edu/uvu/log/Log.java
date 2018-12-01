@@ -17,10 +17,11 @@ public class Log {
     private String size;
     private String referrer;
     private String userAgent;
+    private String fullQuery;
 
     public Log(){}
 
-    public Log(String ip, String logName, String username, String timestamp, String method, String query, String protocol, String httpStatus, String size, String referrer, String userAgent) throws ParseException{
+    public Log(String ip, String logName, String username, String timestamp, String method, String query, String protocol, String httpStatus, String size, String referrer, String userAgent, String fullQuery) throws ParseException{
         this.ip = ip;
         this.logName = logName.replace("\"","");
         this.username = username;
@@ -33,6 +34,7 @@ public class Log {
         this.size = (size != null && !size.isEmpty()) ? size : null;
         this.referrer = referrer.replace("\"","");
         this.userAgent = userAgent;
+        this.fullQuery = fullQuery;
     }
 
     public String getIp() {
@@ -121,5 +123,13 @@ public class Log {
 
     public void setUserAgent(String userAgent) {
         this.userAgent = userAgent;
+    }
+
+    public String getFullQuery(){
+        return this.fullQuery;
+    }
+
+    public void setFullQuery(String fullQuery){
+        this.fullQuery = fullQuery;
     }
 }

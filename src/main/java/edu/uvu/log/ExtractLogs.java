@@ -43,15 +43,18 @@ public class ExtractLogs {
             }
 
             String userAgent = "";
+            String fullQuery = null;
             if (tokens.size() > 0) {
                 userAgent = tokens.get(tokens.size() - 1);
+                fullQuery = tokens.get(0);
             }
 
+
             try {
-                Log log = new Log(splitn[0], splitn[1], splitn[2], splitn[3], splitn[5], splitn[6], splitn[7], splitn[8], splitn[9], splitn[10], userAgent);
+                Log log = new Log(splitn[0], splitn[1], splitn[2], splitn[3], splitn[5], splitn[6], splitn[7], splitn[8], splitn[9], splitn[10], userAgent, fullQuery);
                 logs.add(log);
             } catch (Exception e) {
-                Log log = new Log(splitn[0], splitn[1], splitn[2], splitn[3], splitn[5], splitn[6], "", "", "", "", userAgent);
+                Log log = new Log(splitn[0], splitn[1], splitn[2], splitn[3], splitn[5], splitn[6], "", "", "", "", userAgent, fullQuery);
                 logs.add(log);
             }
             count++;
@@ -104,7 +107,8 @@ public class ExtractLogs {
                 "HTTP_STATUS VARCHAR(30)," +
                 "SIZE VARCHAR(2000)," +
                 "REFERRAL_URL VARCHAR(2000)," +
-                "USER_AGENT VARCHAR(2000)" +
+                "USER_AGENT VARCHAR(2000)," +
+                "FULL_QUERY VARCHAR(2000)" +
                 " );";
 
         statement.execute(createTable);
@@ -114,6 +118,7 @@ public class ExtractLogs {
     public static void insertLogs(Connection connection, List<Log> logs) throws SQLException {
 
         String insertLogs = "INSERT INTO logs VALUES (" +
+                "?," +
                 "?," +
                 "?," +
                 "?," +
@@ -147,7 +152,7 @@ public class ExtractLogs {
             statement.setString(9, log.getSize());
             statement.setString(10, log.getReferrer());
             statement.setString(11, log.getUserAgent());
-
+            statement.setString(12, log.getFullQuery());
             statement.execute();
             i++;
         }
