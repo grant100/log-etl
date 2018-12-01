@@ -29,9 +29,21 @@ public class Log {
         this.timestamp = df.parse(timestamp.replace("[","").substring(0,timestamp.indexOf(":") -1));
         this.method = method.replace("\"","");
         this.query = query;
-        this.protocol = protocol.replace("\"","");
-        this.httpStatus = httpStatus;
-        this.size = (size != null && !size.isEmpty()) ? size : null;
+
+        String p = protocol.replace("\"","");
+	if(p.contains("HTTP")){this.protocol = p;}else{this.protocol = "?";}
+     
+        try{
+	    Integer.parseInt(httpStatus);
+	    this.httpStatus = httpStatus;
+	   }catch(Exception e){this.httpStatus = "?";}	
+
+        if(size != null && !size.isEmpty()){
+	   try{
+	    Integer.parseInt(size);
+	    this.size = size;
+	   }catch(Exception e){this.size = "?";}	
+	}
         this.referrer = referrer.replace("\"","");
         this.userAgent = userAgent;
         this.fullQuery = fullQuery;
