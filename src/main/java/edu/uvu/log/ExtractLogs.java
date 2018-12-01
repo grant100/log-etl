@@ -102,7 +102,7 @@ public class ExtractLogs {
                 "QUERY VARCHAR(2000)," +
                 "PROTOCOL VARCHAR(30)," +
                 "HTTP_STATUS VARCHAR(30)," +
-                "SIZE NUMBER(19)," +
+                "SIZE VARCHAR(2000)," +
                 "REFERRAL_URL VARCHAR(2000)," +
                 "USER_AGENT VARCHAR(2000)" +
                 " );";
@@ -139,12 +139,12 @@ public class ExtractLogs {
             statement.setString(1, log.getIp());
             statement.setString(2, log.getLogName());
             statement.setString(3, log.getUsername());
-            statement.setDate(4, new java.sql.Date(log.getTimestamp().getTime()));
+            statement.setDate(4, new java.sql.Date(log.getTimestamp().getTime()));         
             statement.setString(5, log.getMethod());
             statement.setString(6, log.getQuery());
             statement.setString(7, log.getProtocol());
             statement.setString(8, log.getHttpStatus());
-            statement.setLong(9, log.getSize());
+            statement.setString(9, log.getSize());
             statement.setString(10, log.getReferrer());
             statement.setString(11, log.getUserAgent());
 

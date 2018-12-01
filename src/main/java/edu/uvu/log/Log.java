@@ -14,7 +14,7 @@ public class Log {
     private String query;
     private String protocol;
     private String httpStatus;
-    private Long size;
+    private String size;
     private String referrer;
     private String userAgent;
 
@@ -30,9 +30,7 @@ public class Log {
         this.query = query;
         this.protocol = protocol.replace("\"","");
         this.httpStatus = httpStatus;
-        if(!size.isEmpty()){
-            this.size = Long.parseLong(size);
-        }
+        this.size = size;
         this.referrer = referrer.replace("\"","");
         this.userAgent = userAgent;
     }
@@ -101,11 +99,11 @@ public class Log {
         this.httpStatus = httpStatus;
     }
 
-    public Long getSize() {
+    public String getSize() {
         return size;
     }
 
-    public void setSize(Long size) {
+    public void setSize(String size) {
         this.size = size;
     }
 
