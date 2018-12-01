@@ -3,7 +3,6 @@ package edu.uvu.log;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
-import java.net.URL;
 import java.sql.*;
 import java.util.ArrayList;
 import java.text.DecimalFormat;
@@ -20,9 +19,12 @@ public class ExtractLogs {
 
     public static void read() throws Exception {
 
+        System.out.print("Enter path to log file: ");
+        Scanner in = new Scanner(System.in);
+        String file = in.nextLine();
+
         List<Log> logs = new ArrayList<>();
-        URL file = ClassLoader.class.getResource("/access_all");
-        BufferedReader reader = new BufferedReader(new FileReader(new File(file.getPath())));
+        BufferedReader reader = new BufferedReader(new FileReader(new File(file)));
         String line;
         Pattern p = Pattern.compile("\"([^\"]*)\"");
         int count = 1;
@@ -46,10 +48,10 @@ public class ExtractLogs {
             }
 
             try {
-                Log log = new Log(splitn[0], splitn[1], splitn[2], splitn[3] + splitn[4], splitn[5], splitn[6], splitn[7], splitn[8], splitn[9], splitn[10], userAgent);
+                Log log = new Log(splitn[0], splitn[1], splitn[2], splitn[3], splitn[5], splitn[6], splitn[7], splitn[8], splitn[9], splitn[10], userAgent);
                 logs.add(log);
             } catch (Exception e) {
-                Log log = new Log(splitn[0], splitn[1], splitn[2], splitn[3] + splitn[4], splitn[5], splitn[6], "", "", "", "", userAgent);
+                Log log = new Log(splitn[0], splitn[1], splitn[2], splitn[3], splitn[5], splitn[6], "", "", "", "", userAgent);
                 logs.add(log);
             }
             count++;
@@ -93,14 +95,14 @@ public class ExtractLogs {
         Statement statement = connection.createStatement();
         String createTable = "CREATE TABLE logs (" +
                 "IP VARCHAR(30)," +
-                "D1 VARCHAR(30)," +
-                "D2 VARCHAR(30)," +
-                "TIMESTAMP VARCHAR(30)," +
+                "LOG_NAME VARCHAR(30)," +
+                "USERNAME VARCHAR(30)," +
+                "TIMESTAMP DATE," +
                 "METHOD VARCHAR(30)," +
                 "QUERY VARCHAR(2000)," +
                 "PROTOCOL VARCHAR(30)," +
                 "HTTP_STATUS VARCHAR(30)," +
-                "SIZE VARCHAR(200)," +
+                "SIZE NUMBER(19)," +
                 "REFERRAL_URL VARCHAR(2000)," +
                 "USER_AGENT VARCHAR(2000)" +
                 " );";
@@ -135,15 +137,15 @@ public class ExtractLogs {
             float pct = (i / size) * 100;
             System.out.print("\rWorking  ==> " + df.format(pct) + "%");
             statement.setString(1, log.getIp());
-            statement.setString(2, log.getDashOne());
-            statement.setString(3, log.getDashTwo());
-            statement.setString(4, log.getTimestamp());
+            statement.setString(2, log.getLogName());
+            statement.setString(3, log.getUsername());
+            statement.setDate(4, new java.sql.Date(log.getTimestamp().getTime()));
             statement.setString(5, log.getMethod());
             statement.setString(6, log.getQuery());
             statement.setString(7, log.getProtocol());
             statement.setString(8, log.getHttpStatus());
-            statement.setString(9, log.getSize());
-            // statement.setString(10, log.getReferralUrl());
+            statement.setLong(9, log.getSize());
+            statement.setString(10, log.getReferrer());
             statement.setString(11, log.getUserAgent());
 
             statement.execute();

@@ -1,31 +1,37 @@
 package edu.uvu.log;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 public class Log {
     private String ip;
-    private String dashOne;
-    private String dashTwo;
-    private String timestamp;
+    private String logName;
+    private String username;
+    private Date timestamp;
     private String method;
     private String query;
     private String protocol;
     private String httpStatus;
-    private String size;
-    private String referralUrl;
+    private Long size;
+    private String referrer;
     private String userAgent;
 
     public Log(){}
 
-    public Log(String ip, String dashOne, String dashTwo, String timestamp, String method, String query, String protocol, String httpStatus, String size, String referralUrl, String userAgent) {
+    public Log(String ip, String logName, String username, String timestamp, String method, String query, String protocol, String httpStatus, String size, String referrer, String userAgent) throws ParseException{
         this.ip = ip;
-        this.dashOne = dashOne.replace("\"","");
-        this.dashTwo = dashTwo.replace("\"","");
-        this.timestamp = timestamp.replace("[","").replace("]","");
+        this.logName = logName.replace("\"","");
+        this.username = username;
+        DateFormat df = new SimpleDateFormat("dd/MMM/yyyy");
+        this.timestamp = df.parse(timestamp.replace("[","").substring(0,timestamp.indexOf(":") -1));
         this.method = method.replace("\"","");
         this.query = query;
         this.protocol = protocol.replace("\"","");
         this.httpStatus = httpStatus;
-        this.size = size;
-        this.referralUrl = referralUrl.replace("\"","");
+        this.size = Long.parseLong(size);
+        this.referrer = referrer.replace("\"","");
         this.userAgent = userAgent;
     }
 
@@ -37,27 +43,27 @@ public class Log {
         this.ip = ip;
     }
 
-    public String getDashOne() {
-        return dashOne;
+    public String getLogName() {
+        return logName;
     }
 
-    public void setDashOne(String dashOne) {
-        this.dashOne = dashOne;
+    public void setLogName(String logName) {
+        this.logName = logName;
     }
 
-    public String getDashTwo() {
-        return dashTwo;
+    public String getUsername() {
+        return username;
     }
 
-    public void setDashTwo(String dashTwo) {
-        this.dashTwo = dashTwo;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
-    public String getTimestamp() {
+    public Date getTimestamp() {
         return timestamp;
     }
 
-    public void setTimestamp(String timestamp) {
+    public void setTimestamp(Date timestamp) {
         this.timestamp = timestamp;
     }
 
@@ -93,20 +99,20 @@ public class Log {
         this.httpStatus = httpStatus;
     }
 
-    public String getSize() {
+    public Long getSize() {
         return size;
     }
 
-    public void setSize(String size) {
+    public void setSize(Long size) {
         this.size = size;
     }
 
-    public String getReferralUrl() {
-        return referralUrl;
+    public String getReferrer() {
+        return referrer;
     }
 
-    public void setReferralUrl(String referralUrl) {
-        this.referralUrl = referralUrl;
+    public void setReferrer(String referrer) {
+        this.referrer = referrer;
     }
 
     public String getUserAgent() {
