@@ -30,7 +30,9 @@ public class Log {
         this.query = query;
         this.protocol = protocol.replace("\"","");
         this.httpStatus = httpStatus;
-        this.size = Long.parseLong(size);
+        if(!size.isEmpty()){
+            this.size = Long.parseLong(size);
+        }
         this.referrer = referrer.replace("\"","");
         this.userAgent = userAgent;
     }
