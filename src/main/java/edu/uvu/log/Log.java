@@ -30,7 +30,7 @@ public class Log {
         this.query = query;
         this.protocol = protocol.replace("\"","");
         this.httpStatus = httpStatus;
-        this.size = size;
+        this.size = (size != null && !size.isEmpty()) ? size : null;
         this.referrer = referrer.replace("\"","");
         this.userAgent = userAgent;
     }

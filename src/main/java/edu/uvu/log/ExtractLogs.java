@@ -97,7 +97,7 @@ public class ExtractLogs {
                 "IP VARCHAR(30)," +
                 "LOG_NAME VARCHAR(30)," +
                 "USERNAME VARCHAR(30)," +
-                "TIMESTAMP DATE," +
+                "DATE DATE," +
                 "METHOD VARCHAR(30)," +
                 "QUERY VARCHAR(2000)," +
                 "PROTOCOL VARCHAR(30)," +
