@@ -3,6 +3,7 @@ package edu.uvu.log;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
+import java.net.URL;
 import java.sql.*;
 import java.util.ArrayList;
 import java.text.DecimalFormat;
@@ -18,21 +19,18 @@ public class ExtractLogs {
     }
 
     public static void read() throws Exception {
-        System.out.println("Enter path to log file: ");
-        Scanner in = new Scanner(System.in);
-        String path = in.nextLine();
 
         List<Log> logs = new ArrayList<>();
-
-        BufferedReader reader = new BufferedReader(new FileReader(new File(path)));
+        URL file = ClassLoader.class.getResource("/access_all");
+        BufferedReader reader = new BufferedReader(new FileReader(new File(file.getPath())));
         String line;
-	Pattern p = Pattern.compile("\"([^\"]*)\"");
+        Pattern p = Pattern.compile("\"([^\"]*)\"");
         int count = 1;
         while ((line = reader.readLine()) != null) {
-	    System.out.print("\rParsing  ==> "+count+" logs");
+            System.out.print("\rParsing  ==> " + count + " logs");
             String res = line;
 
-            
+
             Matcher m = p.matcher(res);
 
             List<String> tokens = new ArrayList<>();
@@ -54,9 +52,9 @@ public class ExtractLogs {
                 Log log = new Log(splitn[0], splitn[1], splitn[2], splitn[3] + splitn[4], splitn[5], splitn[6], "", "", "", "", userAgent);
                 logs.add(log);
             }
-	    count++;	
+            count++;
         }
-	System.out.println("\rParsed   ==> "+count+" logs   ");	
+        System.out.println("\rParsed   ==> " + count + " logs   ");
         String url = "jdbc:mysql://localhost:3306/webappsdb";
         String username = "cyber";
         String password = "security";
@@ -64,12 +62,12 @@ public class ExtractLogs {
         Connection connection = null;
         try {
             connection = DriverManager.getConnection(url, username, password);
-	    connection.setAutoCommit(false);
+            connection.setAutoCommit(false);
             System.out.println("\rConnected to: " + url);
             dropTable(connection);
             createTable(connection);
             insertLogs(connection, logs);
-	    connection.commit();
+            connection.commit();
             System.out.println("Exiting!");
         } catch (SQLException e) {
             throw e;
@@ -83,13 +81,14 @@ public class ExtractLogs {
 
     public static void dropTable(Connection connection) throws SQLException {
         Statement statement = connection.createStatement();
-        try{
+        try {
             String dropTable = "DROP TABLE logs;";
             statement.execute(dropTable);
-        }catch (Exception e){
+        } catch (Exception e) {
         }
 
     }
+
     public static void createTable(Connection connection) throws SQLException {
         Statement statement = connection.createStatement();
         String createTable = "CREATE TABLE logs (" +
@@ -131,10 +130,10 @@ public class ExtractLogs {
         float i = 1;
         float size = logs.size();
         DecimalFormat df = new DecimalFormat();
-	df.setMaximumFractionDigits(2);
+        df.setMaximumFractionDigits(2);
         for (Log log : logs) {
-            float pct = (i/size)*100;		
-	    System.out.print("\rWorking  ==> "+df.format(pct)+"%");		
+            float pct = (i / size) * 100;
+            System.out.print("\rWorking  ==> " + df.format(pct) + "%");
             statement.setString(1, log.getIp());
             statement.setString(2, log.getDashOne());
             statement.setString(3, log.getDashTwo());
@@ -144,14 +143,14 @@ public class ExtractLogs {
             statement.setString(7, log.getProtocol());
             statement.setString(8, log.getHttpStatus());
             statement.setString(9, log.getSize());
-            statement.setString(10, log.getReferralUrl());
+            // statement.setString(10, log.getReferralUrl());
             statement.setString(11, log.getUserAgent());
 
             statement.execute();
             i++;
         }
-	float pct = (i/size)*100;
-	System.out.println("\rFinished ==> "+df.format(pct)+"%      ");
+        float pct = (i / size) * 100;
+        System.out.println("\rFinished ==> " + df.format(pct) + "%      ");
         System.out.println("\rCompleted inserting logs into webappsdb.logs table");
     }
 
