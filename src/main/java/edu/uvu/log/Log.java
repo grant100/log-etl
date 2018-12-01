@@ -19,32 +19,41 @@ public class Log {
     private String userAgent;
     private String fullQuery;
 
-    public Log(){}
+    public Log() {
+    }
 
-    public Log(String ip, String logName, String username, String timestamp, String method, String query, String protocol, String httpStatus, String size, String referrer, String userAgent, String fullQuery) throws ParseException{
+    public Log(String ip, String logName, String username, String timestamp, String method, String query, String protocol, String httpStatus, String size, String referrer, String userAgent, String fullQuery) throws ParseException {
         this.ip = ip;
-        this.logName = logName.replace("\"","");
+        this.logName = logName.replace("\"", "");
         this.username = username;
         DateFormat df = new SimpleDateFormat("dd/MMM/yyyy");
-        this.timestamp = df.parse(timestamp.replace("[","").substring(0,timestamp.indexOf(":") -1));
-        this.method = method.replace("\"","");
+        this.timestamp = df.parse(timestamp.replace("[", "").substring(0, timestamp.indexOf(":") - 1));
+        this.method = method.replace("\"", "");
         this.query = query;
 
-        String p = protocol.replace("\"","");
-	if(p.contains("HTTP")){this.protocol = p;}else{this.protocol = "?";}
-     
-        try{
-	    Integer.parseInt(httpStatus);
-	    this.httpStatus = httpStatus;
-	   }catch(Exception e){this.httpStatus = "?";}	
+        String p = protocol.replace("\"", "");
+        if (p.contains("HTTP")) {
+            this.protocol = p;
+        } else {
+            this.protocol = "?";
+        }
 
-        if(size != null && !size.isEmpty()){
-	   try{
-	    Integer.parseInt(size);
-	    this.size = size;
-	   }catch(Exception e){this.size = "?";}	
-	}
-        this.referrer = referrer.replace("\"","");
+        try {
+            Integer.parseInt(httpStatus);
+            this.httpStatus = httpStatus;
+        } catch (Exception e) {
+            this.httpStatus = "?";
+        }
+
+        if (size != null && !size.isEmpty()) {
+            try {
+                Integer.parseInt(size);
+                this.size = size;
+            } catch (Exception e) {
+                this.size = "?";
+            }
+        }
+        this.referrer = referrer.replace("\"", "");
         this.userAgent = userAgent;
         this.fullQuery = fullQuery;
     }
@@ -137,11 +146,11 @@ public class Log {
         this.userAgent = userAgent;
     }
 
-    public String getFullQuery(){
+    public String getFullQuery() {
         return this.fullQuery;
     }
 
-    public void setFullQuery(String fullQuery){
+    public void setFullQuery(String fullQuery) {
         this.fullQuery = fullQuery;
     }
 }
